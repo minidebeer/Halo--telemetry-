@@ -533,3 +533,43 @@ export const paymentProcessing = {
   status: 'TBC',
   display: '+ fees',
 }
+
+export const scribeQuality = {
+  editRate: '34%',
+  editRateStatus: 'warn',
+  regenRate: '4.2%',
+  regenRateStatus: 'good',
+  editMagnitude: [
+    { label: 'Minor', pct: 58, color: '#22C55E' },
+    { label: 'Moderate', pct: 28, color: '#F59E0B' },
+    { label: 'Major', pct: 14, color: '#EF4444' },
+  ],
+}
+
+export const sessionData = {
+  sessionsToday: 8,
+  avgDurationMinutes: 24,
+  pageVisits: [
+    { page: 'Folders', visits: 42, pct: 85 },
+    { page: 'Dashboard', visits: 28, pct: 60 },
+    { page: 'Ward board', visits: 17, pct: 35 },
+    { page: 'Billing', visits: 9, pct: 20 },
+    { page: 'Settings', visits: 4, pct: 8 },
+  ],
+}
+
+export const templateData = {
+  doctorEdits: 12,
+  scribeAutoUpdates: 38,
+  uniqueTemplatesUsed: 4,
+  mostEdited: {
+    name: 'op_note_knee_scope',
+    edits: 8,
+    lastEdited: '2 days ago',
+    magnitude: 'minor',
+  },
+  editSource: [
+    { label: 'Scribe', pct: 76, color: '#40C4D4' },
+    { label: 'Doctor', pct: 24, color: '#0F172A' },
+  ],
+}
