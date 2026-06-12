@@ -154,8 +154,9 @@ export default function OverviewTab({ selectedPracticeId }) {
   const featureKey = featureKeys[activeFeature]
   const barData = practice.featureUsage[featureKey]
   const isAllPractices = practice.id === 'all'
-  const coldStart = coldStartPractices[0]
-  const progressPercent = (coldStart.daysCurrent / coldStart.daysTotal) * 100
+  const visibleColdStarts = isAllPractices
+    ? coldStartPractices
+    : coldStartPractices.filter((cs) => cs.practice === practice.name)
 
   const apiTrendColor = practice.kpis.apiTrend.startsWith('-')
     ? 'text-red-500'
@@ -167,30 +168,8 @@ export default function OverviewTab({ selectedPracticeId }) {
   const zScoreIsNegative = practice.zScore?.value?.startsWith('-')
 
   return (
-    <div className="space-y-5">
-      <div>
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-400">
-          Filter by feature
-        </p>
-        <div className="flex flex-wrap gap-[5px]">
-          {featureFilters.map((feature) => (
-            <button
-              key={feature}
-              type="button"
-              onClick={() => setActiveFeature(feature)}
-              className={`cursor-pointer rounded-full border px-[10px] py-[4px] text-[10px] font-semibold transition-all ${
-                activeFeature === feature
-                  ? 'border-[#0F172A] bg-[#0F172A] text-white'
-                  : 'border-slate-200 bg-slate-50 text-slate-500'
-              }`}
-            >
-              {feature}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
+    <div className="flex flex-col gap-4 p-6">
+      <div className="grid grid-cols-4 gap-3">
         <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-3">
           <div className="mb-1">
             <KpiIcon name="activity" />
@@ -397,38 +376,67 @@ export default function OverviewTab({ selectedPracticeId }) {
         </div>
       )}
 
-      <div className="rounded-xl border border-[#BAE6FD] bg-[#F0F9FF] p-3">
-        <div className="mb-3 flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-[#0F172A]">
-            {coldStart.practice} · Cold-start
-          </span>
-          <span className="rounded-full bg-[#E0F2FE] px-2 py-[2px] text-[10px] font-bold text-[#0369A1]">
-            {coldStart.daysLeft} days left
-          </span>
-        </div>
-
-        <div className="h-[7px] w-full overflow-hidden rounded-full bg-[#E0F2FE]">
+      {visibleColdStarts.map((coldStart) => {
+        const progressPercent = (coldStart.daysCurrent / coldStart.daysTotal) * 100
+        return (
           <div
-            className="h-full rounded-full bg-gradient-to-r from-[#40C4D4] to-[#0EA5E9] transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+            key={coldStart.practice}
+            className="rounded-xl border border-[#BAE6FD] bg-[#F0F9FF] p-3"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-[#0F172A]">
+                {coldStart.practice} · Cold-start
+              </span>
+              <span className="rounded-full bg-[#E0F2FE] px-2 py-[2px] text-[10px] font-bold text-[#0369A1]">
+                {coldStart.daysLeft} days left
+              </span>
+            </div>
 
-        <div className="mt-1.5 flex justify-between">
-          <span className="text-[10px] font-medium text-slate-400">Day 0</span>
-          <span className="text-[10px] font-medium text-slate-400">
-            Day {coldStart.daysCurrent} today
-          </span>
-          <span className="text-[10px] font-medium text-slate-400">Day {coldStart.daysTotal}</span>
-        </div>
+            <div className="h-[7px] w-full overflow-hidden rounded-full bg-[#E0F2FE]">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-[#40C4D4] to-[#0EA5E9] transition-all duration-300"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
 
-        <p className="mt-1 text-[10px] font-medium text-slate-500">{coldStart.footerText}</p>
-      </div>
+            <div className="mt-1.5 flex justify-between">
+              <span className="text-[10px] font-medium text-slate-400">Day 0</span>
+              <span className="text-[10px] font-medium text-slate-400">
+                Day {coldStart.daysCurrent} today
+              </span>
+              <span className="text-[10px] font-medium text-slate-400">Day {coldStart.daysTotal}</span>
+            </div>
+
+            <p className="mt-1 text-[10px] font-medium text-slate-500">{coldStart.footerText}</p>
+          </div>
+        )
+      })}
 
       <div>
-        <p className="mb-3 text-[10px] font-bold uppercase tracking-wide text-slate-400">
+        <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-400">
           Usage by practice
         </p>
+        <div className="mb-3">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-400">
+            Filter by feature
+          </p>
+          <div className="flex flex-wrap gap-[5px]">
+            {featureFilters.map((feature) => (
+              <button
+                key={feature}
+                type="button"
+                onClick={() => setActiveFeature(feature)}
+                className={`cursor-pointer rounded-full border px-[10px] py-[4px] text-[10px] font-semibold transition-all ${
+                  activeFeature === feature
+                    ? 'border-[#0F172A] bg-[#0F172A] text-white'
+                    : 'border-slate-200 bg-slate-50 text-slate-500'
+                }`}
+              >
+                {feature}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="space-y-2.5">
           {practiceBarLabels.map((label, i) => {
             const width = barData[i]

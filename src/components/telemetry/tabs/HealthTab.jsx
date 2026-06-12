@@ -51,51 +51,53 @@ function PipelineRow({ row }) {
 
 export default function HealthTab() {
   return (
-    <div className="space-y-5">
-      <div>
-        <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-gray-500">
-          Endpoint status
-        </p>
-        <div className="space-y-2">
-          {healthEndpoints.map((endpoint) => {
-            const isHealthy = endpoint.status === 'healthy'
-            return (
-              <div
-                key={endpoint.name}
-                className="flex items-center justify-between rounded-md border border-[#E2E8F0] bg-[#F8FAFC] p-2.5"
-              >
-                <div className="flex items-center gap-2">
-                  <EndpointIcon name={endpoint.icon} />
-                  <span className="text-xs font-medium text-[#0F172A]">{endpoint.name}</span>
+    <div className="flex flex-col gap-4 p-6">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-gray-500">
+            Endpoint status
+          </p>
+          <div className="space-y-2">
+            {healthEndpoints.map((endpoint) => {
+              const isHealthy = endpoint.status === 'healthy'
+              return (
+                <div
+                  key={endpoint.name}
+                  className="flex items-center justify-between rounded-md border border-[#E2E8F0] bg-[#F8FAFC] p-2.5"
+                >
+                  <div className="flex items-center gap-2">
+                    <EndpointIcon name={endpoint.icon} />
+                    <span className="text-xs font-medium text-[#0F172A]">{endpoint.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-medium text-slate-400">{endpoint.response}</span>
+                    <span
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: isHealthy ? '#22C55E' : '#F59E0B' }}
+                    />
+                    <span
+                      className={`text-[10px] font-medium ${
+                        isHealthy ? 'text-emerald-700' : 'text-amber-800'
+                      }`}
+                    >
+                      {isHealthy ? 'Healthy' : 'Degraded'}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-medium text-slate-400">{endpoint.response}</span>
-                  <span
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ backgroundColor: isHealthy ? '#22C55E' : '#F59E0B' }}
-                  />
-                  <span
-                    className={`text-[10px] font-medium ${
-                      isHealthy ? 'text-emerald-700' : 'text-amber-800'
-                    }`}
-                  >
-                    {isHealthy ? 'Healthy' : 'Degraded'}
-                  </span>
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
-      </div>
 
-      <div>
-        <p className="mb-3 text-[10px] font-bold uppercase tracking-wide text-slate-400">
-          Scribe pipeline
-        </p>
-        <div className="space-y-2">
-          {scribePipeline.map((row) => (
-            <PipelineRow key={row.name} row={row} />
-          ))}
+        <div>
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-wide text-slate-400">
+            Scribe pipeline
+          </p>
+          <div className="space-y-2">
+            {scribePipeline.map((row) => (
+              <PipelineRow key={row.name} row={row} />
+            ))}
+          </div>
         </div>
       </div>
 

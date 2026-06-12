@@ -232,13 +232,17 @@ function DriveSyncRow({ row }) {
 
 export default function AgentsTab() {
   return (
-    <div>
-      <ScribeAgentCard agent={agentData[0]} />
-      <AgentCard agent={agentData[1]} />
-      <AgentCard agent={agentData[2]} />
+    <div className="flex flex-col gap-4 p-6">
+      <div className="grid grid-cols-3 gap-4">
+        <ScribeAgentCard agent={agentData[0]} />
+        <AgentCard agent={agentData[1]} />
+        <AgentCard agent={agentData[2]} />
+      </div>
 
-      <SessionsCard />
-      <TemplatesCard />
+      <div className="grid grid-cols-2 gap-4">
+        <SessionsCard />
+        <TemplatesCard />
+      </div>
 
       <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-400">
         Drive sync queue
